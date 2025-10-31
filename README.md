@@ -1,4 +1,4 @@
-## Pokemon ZA Shineloop
+## Pokemon ZA ShinyHunt
 
 This project allows you to run automated scripts using Arduino Uno R3 (or other ATmega16u2-based device) for Pokemon ZA automated shiny hunting.
 
@@ -25,14 +25,17 @@ This project allows you to run automated scripts using Arduino Uno R3 (or other 
 
 ### Scripts
 
+- Before plug in the device, make sure to disconnect all other controllers
+
 - **bench_loop**: Automates repeated bench interactions for day/night switch. 
 1.  Manually rest in the bench and wait for loading finished, then do not move and plug in the device
+
 - **wild_area_common**: Automates repeated teleporting to the wild area and enter.
 1.  Put your character facing the entry of wild area, then plug in the device.
+
 - **RestaurantFight**: Automates farming restaurant fights for 1000 fights required for Mable's Research.
 1.  Have active pokemon with attack move in right slot (A).
 2.  Facing restaurant reception, then then plug in the device.
-**Before plug in the device, make sure to disconnect all other controllers**
 
 You can add new scripts by creating additional `.c` files in the [`Scripts/`](Scripts/) directory and updating the makefile as needed.
 
