@@ -47,7 +47,7 @@ You can add new scripts by creating additional `.c` files in the [`Scripts/`](Sc
 ### Credits and References
 
 - Thanks to progmem for the original implementation: [GitHub - progmem/Switch-Fightstick](https://github.com/progmem/Switch-Fightstick)
-- Inspired from [GitHub - Almtr/Switch-Fightstick](https://github.com/shinyquagsire23/Switch-Fightstick) for the original pokemon modules, this repo is created based on his work.
+- Inspired from [GitHub - Almtr/Switch-Fightstick](https://github.com/Almtr/Switch-Fightstick) for the original pokemon modules, this repo is created based on his work.
 - Other references:
 - [GitHub - shinyquagsire23/Switch-Fightstick](https://github.com/shinyquagsire23/Switch-Fightstick)
 - [GitHub - bertrandom/snowball-thrower](https://github.com/bertrandom/snowball-thrower)
