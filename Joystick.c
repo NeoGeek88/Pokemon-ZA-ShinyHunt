@@ -25,6 +25,13 @@ these buttons for our use.
  */
 
 #include "Joystick.h"
+#include "Scripts/Scripts.h"
+
+/*
+	Variables for GetNextReport
+*/
+static uint16_t duration_count = 0;
+static uint8_t is_synced = 0;
 
 /*
 The following ButtonMap variable defines all possible buttons within the
@@ -234,63 +241,51 @@ void HID_Task(void) {
 	}
 }
 
-// Prepare the next report for the host.
-void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
-	// All of this code here is handled -really poorly-, and should be replaced with something a bit more production-worthy.
-	uint16_t buf_button   = 0x00;
-	uint8_t  buf_joystick = 0x00;
+/*
+	Helper function to sync the controller with the Switch.
+*/
+uint8_t SyncController(USB_JoystickReport_Input_t* const ReportData, uint16_t count)
+{
+	switch (count) {
+	case 25:
+	case 50:
+		ReportData->Button |= SWITCH_L | SWITCH_R;
+		break;
+	case 75:
+	case 100:
+		ReportData->Button |= SWITCH_A;
+		break;
+	case 101:
+		return 1;
+	}
+	return 0;
+}
 
-	/* Clear the report contents */
-	memset(ReportData, 0, sizeof(USB_JoystickReport_Input_t));
+/*
+	Prepare the next report for the host.
+*/
+void GetNextReport(USB_JoystickReport_Input_t* const ReportData)
+{
+	/* Reset Controller */
+	ReportData->LX = STICK_CENTER;
+	ReportData->LY = STICK_CENTER;
+	ReportData->RX = STICK_CENTER;
+	ReportData->RY = STICK_CENTER;
+	ReportData->HAT = HAT_CENTER;
+	ReportData->Button = SWITCH_RELEASE;
 
-	buf_button   = (~PIND_DEBOUNCED & 0xFF) << (~PINB_DEBOUNCED & 0x08 ? 8 : 0);
-	buf_joystick = (~PINB_DEBOUNCED & 0xFF);
-
-	for (int i = 0; i < 16; i++) {
-		if (buf_button & (1 << i))
-			ReportData->Button |= ButtonMap[i];
+	if (!is_synced) {
+		if (SyncController(ReportData, duration_count))
+			is_synced = 1;
+		duration_count++;
+		return;
 	}
 
-	if (buf_joystick & 0x10)
-		ReportData->LX = 0;
-	else if (buf_joystick & 0x20)
-		ReportData->LX = 255;
-	else
-		ReportData->LX = 128;
-
-	if (buf_joystick & 0x80)
-		ReportData->LY = 0;
-	else if (buf_joystick & 0x40)
-		ReportData->LY = 255;
-	else
-		ReportData->LY = 128;
-
-	switch(buf_joystick & 0xF0) {
-		case 0x80: // Top
-			ReportData->HAT = 0x00;
-			break;
-		case 0xA0: // Top-Right
-			ReportData->HAT = 0x01;
-			break;
-		case 0x20: // Right
-			ReportData->HAT = 0x02;
-			break;
-		case 0x60: // Bottom-Right
-			ReportData->HAT = 0x03;
-			break;
-		case 0x40: // Bottom
-			ReportData->HAT = 0x04;
-			break;
-		case 0x50: // Bottom-Left
-			ReportData->HAT = 0x05;
-			break;
-		case 0x10: // Left
-			ReportData->HAT = 0x06;
-			break;
-		case 0x90: // Top-Left
-			ReportData->HAT = 0x07;
-			break;
-		default:
-			ReportData->HAT = 0x08;
-	}
+#if defined(BENCH_LOOP)
+	BenchLoop(ReportData);
+#elif defined(ENTER_WILD_AREA_COMMON)
+	EnterWildAreaCommon(ReportData);
+#elif defined(RESTAURANT_FIGHT)
+	RestaurantFight(ReportData);
+#endif
 }
