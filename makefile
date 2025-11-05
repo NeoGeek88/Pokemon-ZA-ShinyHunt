@@ -42,9 +42,17 @@ include $(LUFA_PATH)/Build/lufa_atprogram.mk
 bench_loop: all
 bench_loop: CC_FLAGS += -DBENCH_LOOP
 
+# Bench loop script for area 20
+bench_loop_area_20: all
+bench_loop_area_20: CC_FLAGS += -DBENCH_LOOP_AREA_20
+
 # Script for repeatly teleporting to common wild area
 wild_area_common: all
 wild_area_common: CC_FLAGS += -DENTER_WILD_AREA_COMMON
+
+# Script for wild area 16 farming
+wild_area_16: all
+wild_area_16: CC_FLAGS += -DWILD_AREA_16
 
 # Script for restaurant fight farming
 restaurant_fight: all

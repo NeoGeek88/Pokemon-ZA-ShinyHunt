@@ -283,8 +283,12 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData)
 
 #if defined(BENCH_LOOP)
 	BenchLoop(ReportData);
+#elif defined(BENCH_LOOP_AREA_20)
+	BenchLoopArea20(ReportData);
 #elif defined(ENTER_WILD_AREA_COMMON)
 	EnterWildAreaCommon(ReportData);
+#elif defined(WILD_AREA_16)
+	WildArea16(ReportData);
 #elif defined(RESTAURANT_FIGHT)
 	RestaurantFight(ReportData);
 #endif

@@ -6,8 +6,8 @@ static uint16_t duration_count = 0;
 void BenchLoop(USB_JoystickReport_Input_t* const ReportData)
 {
 	// Simple loop: Move down, wait, press A, wait, repeat
-	// Total loop duration: 2800 counts/~22 seconds
-	switch(duration_count % 2800)
+	// Total loop duration: 3000 counts/~22 seconds
+	switch(duration_count % 3500)
 	{
 		case 25 ... 50:
 		// move up
