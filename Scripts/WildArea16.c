@@ -13,9 +13,9 @@ void WildArea16(USB_JoystickReport_Input_t* const ReportData)
 		// open map
 			ReportData->Button |= SWITCH_START;
 			break;
-		case 75 ... 99:
+		case 75 ... 84:
 		// Slightly move upper right
-			ReportData->LX = STICK_CENTER + 75;
+			ReportData->LX = STICK_CENTER + 80;
             ReportData->LY = STICK_MIN;
 			break;
 		case 125 ... 349:
